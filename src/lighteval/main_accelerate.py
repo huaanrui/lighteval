@@ -75,8 +75,15 @@ def accelerate(  # noqa C901
     save_details: save_details.type = save_details.default,
     wandb: wandb.type = wandb.default,
     # === debug ===
-    max_samples: max_samples.type = max_samples.default,
-    job_id: job_id.type = job_id.default,
+    max_samples: Annotated[
+        Optional[int], Option(help="Maximum number of samples to evaluate on.", rich_help_panel=HELP_PANEL_NAME_3)
+    ] = None,
+    job_id: Annotated[
+        int, Option(help="Optional job id for future reference.", rich_help_panel=HELP_PANEL_NAME_3)
+    ] = 0,
+    generation_size: Annotated[
+        int, Option(help="Manually override the generation size.", rich_help_panel=HELP_PANEL_NAME_3)
+    ] = None
 ):
     """
     Evaluate models using accelerate and transformers as backend.
@@ -111,6 +118,7 @@ def accelerate(  # noqa C901
         remove_reasoning_tags=remove_reasoning_tags,
         reasoning_tags=reasoning_tags,
         load_responses_from_details_date_id=load_responses_from_details_date_id,
+        generation_size=generation_size,
     )
 
     if model_args.endswith(".yaml"):
