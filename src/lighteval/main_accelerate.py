@@ -100,6 +100,9 @@ def accelerate(  # noqa C901
     job_id: Annotated[
         int, Option(help="Optional job id for future reference.", rich_help_panel=HELP_PANEL_NAME_3)
     ] = 0,
+    generation_size: Annotated[
+        int, Option(help="Manually override the generation size.", rich_help_panel=HELP_PANEL_NAME_3)
+    ] = None
 ):
     """
     Evaluate models using accelerate and transformers as backend.
@@ -132,6 +135,7 @@ def accelerate(  # noqa C901
         num_fewshot_seeds=num_fewshot_seeds,
         max_samples=max_samples,
         load_responses_from_details_date_id=load_responses_from_details_date_id,
+        generation_size=generation_size,
     )
 
     if model_args.endswith(".yaml"):

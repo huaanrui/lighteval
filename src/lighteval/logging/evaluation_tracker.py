@@ -213,7 +213,7 @@ class EvaluationTracker:
 
     def save(self) -> None:
         """Saves the experiment information and results to files, and to the hub if requested."""
-        logger.info("Saving experiment tracker")
+        logger.info("\n--- STARTING SAVING RESULTS ---")
         date_id = datetime.now().isoformat().replace(":", "-")
 
         # We first prepare data to save
@@ -269,6 +269,8 @@ class EvaluationTracker:
                 results=self.metrics_logger.metric_aggregated, details=self.details_logger.compiled_details
             )
 
+        logger.info("--- FINISHED SAVING RESULTS ---\n")
+
     def push_to_wandb(self, results_dict: dict, details_datasets: dict) -> None:
         # reformat the results key to replace ':' with '/'
         results_dict = {k.replace(":", "/"): v for k, v in results_dict["results"].items()}
@@ -286,7 +288,7 @@ class EvaluationTracker:
             output_dir = self.output_dir
             output_dir_results = Path(self.results_path_template.format(output_dir=output_dir, org=org, model=model))
         else:
-            output_dir_results = Path(self.output_dir) / "results" / self.general_config_logger.model_name
+            output_dir_results = Path(self.output_dir) / "results" / self.general_config_logger.model_name.split("/")[-1]
         self.fs.mkdirs(output_dir_results, exist_ok=True)
         output_results_file = output_dir_results / f"results_{date_id}.json"
         logger.info(f"Saving results to {output_results_file}")
@@ -294,7 +296,7 @@ class EvaluationTracker:
             f.write(json.dumps(results_dict, cls=EnhancedJSONEncoder, indent=2, ensure_ascii=False))
 
     def _get_details_sub_folder(self, date_id: str):
-        output_dir_details = Path(self.output_dir) / "details" / self.general_config_logger.model_name
+        output_dir_details = Path(self.output_dir) / "details" / self.general_config_logger.model_name.split("/")[-1]
         if date_id in ["first", "last"]:
             # Get all folders in output_dir_details
             if not self.fs.exists(output_dir_details):
