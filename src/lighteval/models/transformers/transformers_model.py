@@ -293,8 +293,8 @@ class TransformersModel(LightevalModel):
         self.model_info = ModelInfo(
             model_name=self.model_name,
             model_sha=self.model_sha,
-            model_dtype=str(self.precision),
-            model_size=int(model_size),
+            model_dtype=config.dtype,
+            model_size=model_size,
         )
         return self
 
