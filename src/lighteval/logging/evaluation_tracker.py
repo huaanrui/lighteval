@@ -213,7 +213,6 @@ class EvaluationTracker:
 
     def save(self) -> None:
         """Saves the experiment information and results to files, and to the hub if requested."""
-        logger.info("\n--- STARTING SAVING RESULTS ---")
         date_id = datetime.now().isoformat().replace(":", "-")
 
         # We first prepare data to save
@@ -269,7 +268,6 @@ class EvaluationTracker:
                 results=self.metrics_logger.metric_aggregated, details=self.details_logger.compiled_details
             )
 
-        logger.info("--- FINISHED SAVING RESULTS ---\n")
 
     def push_to_wandb(self, results_dict: dict, details_datasets: dict) -> None:
         # reformat the results key to replace ':' with '/'
